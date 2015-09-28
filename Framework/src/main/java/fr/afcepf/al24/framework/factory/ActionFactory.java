@@ -56,6 +56,23 @@ public class ActionFactory {
 		log.debug("ActionFactory constructeur");
 	}
 
+	public static IAction createAction(String actionurl) {
+		//Check if class action exists in Map
+		ActionConfig actionConfig = actionsMap.get(actionurl);
+		IAction action = null;
+		try {
+			action = (IAction) Class.forName(actionConfig.getNom()).newInstance();
+		} catch (InstantiationException | IllegalAccessException
+				| ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Load the class
+		
+		//Invoke method
+		return action; 
+	}
 	/**
 	 * 
 	 * @param filename : nom du fichier XML de configuration du framework

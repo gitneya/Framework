@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -88,7 +89,13 @@ public class FrameworkServlet extends HttpServlet {
 		}
 		
 		
-		// actionfactory.
+		//resp.sendRedirect("/TestFramework/PremierePage.jsp");
+		//resp.sendRedirect("/DeuxiemePage.jsp");
+		/*
+		log.debug("RequestDispatcher.............");
+		RequestDispatcher requestDispatcher = req.getRequestDispatcher("/DeuxiemePage.jsp");
+		requestDispatcher.forward(req, resp);
+		*/
 		simpleresponse(resp);
 	    
 	}
