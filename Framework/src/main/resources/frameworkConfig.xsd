@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="framework-config">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="actions">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="action">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="action-name" type="xs:string"/>
+										<xs:element name="url-pattern" type="xs:string"/>
+										<xs:element name="form-name" type="xs:string"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="forms">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="form">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="form-class" type="xs:string"/>
+										<xs:element name="form-name" type="xs:string"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

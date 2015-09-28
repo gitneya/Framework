@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<framework-config xsi:noNamespaceSchemaLocation="frameworkConfig.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<actions>
+		<action>
+			<action-name>zzzzzzzzzzzzz</action-name>
+			<url-pattern>aaaaaaaaaaaaaaa</url-pattern>
+			<form-name>bbbbbbbbbbbbbbbbbb</form-name>
+		</action>
+		
+		<action>
+			<action-name>ggggg</action-name>
+			<url-pattern>ddddd</url-pattern>
+			<form-name>ccccc</form-name>
+		</action>
+		
+		<action>
+			<action-name>11111111111ggggg</action-name>
+			<url-pattern>2222222222ddddd</url-pattern>
+			<form-name>3333333333ccccc</form-name>
+		</action>
+		
+	</actions>
+	
+	<forms>
+		<form>
+			<form-class>KOKOKOKOKOKO</form-class>
+			<form-name>FIFIFIFIFIFI</form-name>
+		</form>
+	</forms>
+	
+	<actions>
+	<action>
+			<action-name>0000000000</action-name>
+			<url-pattern>00000000000</url-pattern>
+			<form-name>000000000000</form-name>
+		</action>
+	
+	</actions>
+</framework-config>

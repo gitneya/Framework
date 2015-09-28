@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<framework-config xsi:noNamespaceSchemaLocation="frameworkConfig.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<actions>
+		
+		<action>
+			<action-name>BeanAction</action-name>
+			<url-pattern>bean.frmk</url-pattern>
+			<form-name>FormBeanName</form-name>
+		</action>
+		
+	</actions>
+	<forms>
+		<form>
+			<form-class>FormBeanClass</form-class>
+			<form-name>FormBeanName</form-name>
+		</form>
+	</forms>
+</framework-config>
