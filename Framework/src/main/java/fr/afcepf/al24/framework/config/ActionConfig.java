@@ -4,7 +4,7 @@
 package fr.afcepf.al24.framework.config;
 
 /**
- * @author Stagiaire
+ * @author yanick
  *
  */
 public class ActionConfig {

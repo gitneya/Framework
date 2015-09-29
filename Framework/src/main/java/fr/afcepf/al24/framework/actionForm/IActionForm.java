@@ -6,11 +6,11 @@ package fr.afcepf.al24.framework.actionForm;
 import fr.afcepf.al24.framework.exception.FrameworkException;
 
 /**
- * @author Stagiaire
+ * @author yanick
  *
  */
 public interface IActionForm {
 
-	public void validate() throws FrameworkException;
+	public boolean validate();
 	public void reset();
 }

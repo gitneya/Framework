@@ -5,9 +5,7 @@ package fr.afcepf.al24.framework.factory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -22,11 +20,14 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import fr.afcepf.al24.framework.action.IAction;
+import fr.afcepf.al24.framework.actionForm.IActionForm;
 import fr.afcepf.al24.framework.config.ActionConfig;
 import fr.afcepf.al24.framework.config.FormConfig;
+import fr.afcepf.al24.framework.exception.FrameworkException;
+import fr.afcepf.al24.framework.exception.FrameworkException.Error_code;
 
 /**
- * @author Stagiaire
+ * @author yanick
  *
  */
 public class ActionFactory {
@@ -34,6 +35,7 @@ public class ActionFactory {
 	private static final String actionsListTag = "actions";
 	private static final String actionListTag = "action";
 
+	private static final int actionListTagChildren = 3;
 	private static final String actionNameTag = "action-name";
 	private static final String urlPatternTag = "url-pattern";
 	private static final String formNameTag = "form-name";
@@ -41,11 +43,12 @@ public class ActionFactory {
 	private static final String formsListTag = "forms";
 	private static final String formListTag = "form";
 
+	private static final int formListTagChildren = 2;
 	private static final String formClassTag = "form-class";
 
 	private static Logger log = Logger.getLogger(ActionFactory.class);
 	private static ActionFactory reference;
-	
+
 	private static Map<String,ActionConfig> actionsMap;
 	private static Map<String,FormConfig> formsMap;
 
@@ -56,22 +59,77 @@ public class ActionFactory {
 		log.debug("ActionFactory constructeur");
 	}
 
-	public static IAction createAction(String actionurl) {
+	/**
+	 * 
+	 * @param actionurl
+	 * @return
+	 * @throws FrameworkException
+	 */
+	public IAction createAction(String actionurl) throws FrameworkException {
+		log.debug("ActionFactory.createAction : find action from url : " + actionurl);
 		//Check if class action exists in Map
-		ActionConfig actionConfig = actionsMap.get(actionurl);
 		IAction action = null;
-		try {
-			action = (IAction) Class.forName(actionConfig.getNom()).newInstance();
-		} catch (InstantiationException | IllegalAccessException
-				| ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		ActionConfig actionConfig = actionsMap.get(actionurl);
+		if (actionConfig != null) {
+			
+			try {
+				log.debug("ActionFactory.createAction : create instance of Action : " + actionConfig.getNom());
+				action = (IAction) Class.forName(actionConfig.getNom()).newInstance();
+				log.debug("ActionFactory.createAction : Action instance :" + action);
+				
+			} catch (InstantiationException | IllegalAccessException
+					| ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			//Invoke method
+			
+		} else {
+			log.debug("ActionFactory.createAction : No action found for this url.");
+			throw new FrameworkException(Error_code.ERROR_ACTION_NOT_EXIST,"Class Action does not exist !");
+		}
+		return action; 
+	}
+	/**
+	 * 
+	 * @param actionurl
+	 * @return
+	 * @throws FrameworkException
+	 */
+	public IActionForm createForm(String actionurl) throws FrameworkException {
+		log.debug("ActionFactory.createForm : find action from url : " + actionurl);
+		//Check if class action exists in Map
+		IActionForm form = null;
+		
+		ActionConfig actionConfig = actionsMap.get(actionurl);
+		if (actionConfig != null) {
+			
+			try {
+				FormConfig formConfig = formsMap.get(actionConfig.getNomForm());
+				if (formConfig != null) {
+					log.debug("ActionFactory.createForm : create instance of Form : " + formConfig.getNomClasse());
+					form = (IActionForm) Class.forName(formConfig.getNomClasse()).newInstance();
+					log.debug("ActionFactory.createForm : Form instance :" + form);
+				} else {
+					log.debug("ActionFactory.createForm : No form found for this url.");
+					throw new FrameworkException(Error_code.ERROR_FORM_NOT_EXIST,"Class Form does not exist !");
+				}
+			} catch (InstantiationException | IllegalAccessException
+					| ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			//Invoke method
+			
+		} else {
+			log.debug("ActionFactory.createForm : No action found for this url.");
+			throw new FrameworkException(Error_code.ERROR_CODE,"Class Action does not exist !");
 		}
 		
-		//Load the class
-		
-		//Invoke method
-		return action; 
+		return form; 
 	}
 	/**
 	 * 
@@ -96,7 +154,7 @@ public class ActionFactory {
 		return root; 
 
 	}
-	
+
 	/**
 	 * 
 	 * @param root
@@ -151,7 +209,7 @@ public class ActionFactory {
 								nElement++;
 							}
 						}
-						if (nElement == 3) {
+						if (nElement == actionListTagChildren) {
 
 							actionsMap.put(ac.getUrlAssociee(),ac);
 							nElement = 0;
@@ -165,7 +223,6 @@ public class ActionFactory {
 		log.debug("Nombre d'actions dans le fichier XML : " + actionsMap.size());
 		return ;
 	}
-
 	/**
 	 * 
 	 * @param root
@@ -216,7 +273,7 @@ public class ActionFactory {
 								nElement++;
 							}
 						}
-						if (nElement == 2) {
+						if (nElement == formListTagChildren) {
 
 							formsMap.put(fc.getNomForm(),fc);
 							nElement = 0;
@@ -229,7 +286,6 @@ public class ActionFactory {
 		log.debug("Nombre de forms dans le fichier XML : " + formsMap.size());
 		return ;
 	}
-
 	/**
 	 * 
 	 * @return

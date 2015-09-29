@@ -6,7 +6,7 @@ package fr.afcepf.al24.framework.config;
 import java.util.Map;
 
 /**
- * @author Stagiaire
+ * @author yanick
  *
  */
 public class ParserConfigXml {

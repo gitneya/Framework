@@ -6,12 +6,20 @@ package fr.afcepf.al24.framework.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.afcepf.al24.framework.actionForm.IActionForm;
+
 /**
- * @author Stagiaire
+ * @author yanick
  *
  */
 public interface IAction {
 
-	public String execute(HttpServletRequest req, HttpServletResponse resp);
+	/**
+	 * 
+	 * @param req request
+	 * @param resp response
+	 * @return url for navigation
+	 */
+	public String execute(IActionForm form, HttpServletRequest req, HttpServletResponse resp);
 	
 }

@@ -18,7 +18,7 @@
 
   <servlet-mapping>
     <servlet-name>FrameworkServlet</servlet-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>*.frmk</url-pattern>
   </servlet-mapping>
 
 </web-app>

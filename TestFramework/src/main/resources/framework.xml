@@ -3,16 +3,47 @@
 	<actions>
 		
 		<action>
-			<action-name>BeanAction</action-name>
-			<url-pattern>bean.frmk</url-pattern>
-			<form-name>FormBeanName</form-name>
+			<!-- Class Action associated with the Url -->
+			<action-name>fr.afcepf.al24.testframework.actionbean.LoginBean</action-name>
+			<!-- Url associated with this Action -->
+			<url-pattern>connection.frmk</url-pattern>
+			<!-- Form name associated with this Action -->
+			<form-name>FormLoginName</form-name>
 		</action>
 		
+		<action>
+			<!-- Class Action associated with the Url -->
+			<action-name>fr.afcepf.al24.testframework.actionbean.ClientBean</action-name>
+			<!-- Url associated with this Action -->
+			<url-pattern>editClient.frmk</url-pattern>
+			<!-- Form name associated with this Action -->
+			<form-name>FormClientName</form-name>
+		</action>
+		
+		<action>
+			<!-- Class Action associated with the Url -->
+			<action-name>fr.afcepf.al24.testframework.actionbean.DeconnexionBean</action-name>
+			<!-- Url associated with this Action -->
+			<url-pattern>deconnexion.frmk</url-pattern>
+			<!-- Form name associated with this Action -->
+			<form-name>FormLoginName</form-name>
+		</action>
 	</actions>
+	
 	<forms>
+	
 		<form>
-			<form-class>FormBeanClass</form-class>
-			<form-name>FormBeanName</form-name>
+			<!-- Class Form -->
+			<form-class>fr.afcepf.al24.testframework.actionform.FormLogin</form-class>
+			<!-- Name of this Form -->
+			<form-name>FormLoginName</form-name>
+		</form>
+
+		<form>
+			<!-- Class Form -->
+			<form-class>fr.afcepf.al24.testframework.actionform.FormClient</form-class>
+			<!-- Name of this Form -->
+			<form-name>FormClientName</form-name>
 		</form>
 	</forms>
 </framework-config>
