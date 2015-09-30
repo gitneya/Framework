@@ -84,7 +84,7 @@ public class PopulateBean {
 		case "long" : o = Long.parseLong(value);
 		break;
 		}
-		
+		//TODO Type Void ???
 		return o;
 	}
 	/**
@@ -95,7 +95,7 @@ public class PopulateBean {
 	 * 
 	 */
 	public void setAttributes(Map<String, String[]> parametersMap, Object o) throws FrameworkException {
-		log.debug("PopulateBean.getPopulateBean setAttributes");
+		log.debug("PopulateBean.getPopulateBean setAttributes for " + o.getClass().getCanonicalName());
 		//for each parameters, call setter(s)
 		Iterator<Entry<String, String[]>> it = parametersMap.entrySet().iterator();
 		while (it.hasNext()) {
@@ -121,24 +121,25 @@ public class PopulateBean {
 					}
 					//Method is found
 					log.debug("Method signature : " + m.toGenericString());
-
 					log.debug("ReturnType : " +  m.getReturnType());
 					log.debug("GenericReturnType : " + m.getGenericReturnType());
 					//Get parameter types
 					Class<?>[] pType  = m.getParameterTypes();
 					Type[] gpType = m.getGenericParameterTypes();
 					Object [] allParameters = new Object[gpType.length];
+					//Debug
 					for (int i = 0; i < pType.length; i++) {
 						log.debug("ParameterType : " + pType[i].toString());
+					}
+					for (int i = 0; i < gpType.length; i++) {
 						log.debug("GenericParameterType : " + gpType[i].toString());
 					}
-
 					//Check if same number of parameters
 					if (gpType.length == attributeValues.length) { 
 						for (int i = 0; i < gpType.length; i++) {
-
-							if (gpType[i].getClass().isPrimitive()) {
-								allParameters[i] = primitiveConvertStringParameter(gpType[i].getClass().toString(), attributeValues[i]);
+							
+							if (pType[i].isPrimitive()) {
+								allParameters[i] = primitiveConvertStringParameter(gpType[i].toString(), attributeValues[i]);
 							} else if ( gpType[i].toString().equals("class java.lang.String")) {
 								allParameters[i] = attributeValues[i];
 							}

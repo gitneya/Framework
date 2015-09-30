@@ -4,8 +4,6 @@
 package fr.afcepf.al24.framework.servlet;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Map;
 
@@ -16,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -52,29 +51,22 @@ public class FrameworkServlet extends HttpServlet {
 		populateBean = PopulateBean.getPopulateBean();
 
 	}
-
-	private void simpleresponse(HttpServletResponse resp) {
-
-		resp.setContentType("text/html");
-		PrintWriter out = null;
-		try {
-			out = resp.getWriter();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	/**
+	 * 
+	 * @param session
+	 * @param formName
+	 * @return
+	 */
+	protected boolean checkFormAlreadyInstanciated(HttpSession session, String formName) {
+		
+		boolean instanciated = false;
+		IActionForm form  = (IActionForm) session.getAttribute(formName);
+		if (form != null) {
+			instanciated  = true;
 		}
-		out.println("<html>");
-		out.println("<body>");
-		out.println("<head>");
-		out.println("<title>First Example</title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<h1>Hello World!</h1>");
-		out.println("</body>");
-		out.println("</html>");
-		out.close();
+		
+		return instanciated;
 	}
-
 	/**
 	 * 
 	 * @param req
@@ -104,10 +96,18 @@ public class FrameworkServlet extends HttpServlet {
 		String nextPage = "";
 		IAction action = null;
 		IActionForm form = null;
+		
 		try {
-			form = actionfactory.createForm(req.getServletPath().replace("/", ""));
-			//Met l'objet formulaire dans la session
-			req.getSession().setAttribute("loginform", form);
+			
+			String formName = actionfactory.getFormCanonicalName(req.getServletPath().replace("/", ""));
+			if (checkFormAlreadyInstanciated(req.getSession(), formName)){
+				log.debug("FrameworkServlet.handleRequest : Form " + formName + " existe dans la session.");
+				form = (IActionForm) req.getSession().getAttribute(formName);
+			} else {
+				form = actionfactory.createForm(req.getServletPath().replace("/", ""));
+				//Met l'objet formulaire dans la session
+				req.getSession().setAttribute(form.getClass().getCanonicalName(), form);
+			}
 			
 			//Fill form with parameters
 			Map<String, String[]> parametersMap = req.getParameterMap();
@@ -120,23 +120,14 @@ public class FrameworkServlet extends HttpServlet {
 			nextPage = action.execute(form, req, resp);
 			
 		} catch (FrameworkException e) {
-			// TODO Auto-generated catch block
 			log.debug("FrameworkServlet.handleRequest : Exception : " + e.getMessage());
 			e.printStackTrace();
 			nextPage = "internalError.jsp";
 		}
-		
-		
 
-		//resp.sendRedirect("/TestFramework/PremierePage.jsp");
-		//resp.sendRedirect("/DeuxiemePage.jsp");
-		
 		log.debug("RequestDispatcher.............");
 		RequestDispatcher requestDispatcher = req.getRequestDispatcher(nextPage);
 		requestDispatcher.forward(req, resp);
-		
-		
-		//simpleresponse(resp);
 	}
 	/**
 	 * 
@@ -154,7 +145,6 @@ public class FrameworkServlet extends HttpServlet {
 		handleRequest(req, resp);
 
 	}
-
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -167,5 +157,4 @@ public class FrameworkServlet extends HttpServlet {
 
 		handleRequest(req, resp);
 	}
-
 }

@@ -27,17 +27,35 @@ import fr.afcepf.al24.framework.exception.FrameworkException;
 import fr.afcepf.al24.framework.exception.FrameworkException.Error_code;
 
 /**
+ * Fabrique d'actions et de formulaires.
  * @author yanick
  *
  */
 public class ActionFactory {
 
+	/**
+	 * Nom de l'élément contenant les Actions.
+	 */
 	private static final String actionsListTag = "actions";
+	/**
+	 * Nom de l'élément contenant une Action.
+	 */
 	private static final String actionListTag = "action";
-
+	/**
+	 * Nombre d'éléments enfants de l'élément <action>.
+	 */
 	private static final int actionListTagChildren = 3;
+	/**
+	 * Element <action-name>, nom de l'action.
+	 */
 	private static final String actionNameTag = "action-name";
+	/**
+	 * Url associée à cette action.
+	 */
 	private static final String urlPatternTag = "url-pattern";
+	/**
+	 * Nom du formulaire associé à cette action.
+	 */
 	private static final String formNameTag = "form-name";
 
 	private static final String formsListTag = "forms";
@@ -46,57 +64,78 @@ public class ActionFactory {
 	private static final int formListTagChildren = 2;
 	private static final String formClassTag = "form-class";
 
+	/**
+	 * Outil de log.
+	 */
 	private static Logger log = Logger.getLogger(ActionFactory.class);
+	/**
+	 * La fabrique d'Actions.
+	 */
 	private static ActionFactory reference;
 
-	private static Map<String,ActionConfig> actionsMap;
-	private static Map<String,FormConfig> formsMap;
+	/**
+	 * Contient la configuration des actions.
+	 */
+	private static Map<String, ActionConfig> actionsMap;
+	/**
+	 * Contient la configuration des formulaires.
+	 */
+	private static Map<String, FormConfig> formsMap;
 
 	/**
-	 * 
+	 * Constructeur privé (singleton).
 	 */
 	private ActionFactory() {
 		log.debug("ActionFactory constructeur");
 	}
-
 	/**
-	 * 
-	 * @param actionurl
-	 * @return
-	 * @throws FrameworkException
+	 * @param actionurl : l'url.
+	 * @return IAction : l'action instanciée.
+	 * @throws FrameworkException : Exception levée en cas d'erreur.
 	 */
 	public IAction createAction(String actionurl) throws FrameworkException {
 		log.debug("ActionFactory.createAction : find action from url : " + actionurl);
 		//Check if class action exists in Map
 		IAction action = null;
-		
 		ActionConfig actionConfig = actionsMap.get(actionurl);
 		if (actionConfig != null) {
-			
 			try {
 				log.debug("ActionFactory.createAction : create instance of Action : " + actionConfig.getNom());
 				action = (IAction) Class.forName(actionConfig.getNom()).newInstance();
 				log.debug("ActionFactory.createAction : Action instance :" + action);
-				
 			} catch (InstantiationException | IllegalAccessException
 					| ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 			//Invoke method
-			
 		} else {
 			log.debug("ActionFactory.createAction : No action found for this url.");
-			throw new FrameworkException(Error_code.ERROR_ACTION_NOT_EXIST,"Class Action does not exist !");
+			throw new FrameworkException(Error_code.ERROR_ACTION_NOT_EXIST, "Class Action does not exist !");
 		}
-		return action; 
+		return action;
 	}
 	/**
-	 * 
-	 * @param actionurl
-	 * @return
-	 * @throws FrameworkException
+	 * getFormCanonicalName : retourne le nom de package.classe du formulaire pour l'url précisée.
+	 * @param actionurl : l'url en parametre.
+	 * @return String : le nom de la classe du formulaire associé à l'url.
+	 */
+	public String getFormCanonicalName(String actionurl) {
+		String canonicalName = "";
+		ActionConfig actionConfig = actionsMap.get(actionurl);
+		if (actionConfig != null) {
+			FormConfig formConfig = formsMap.get(actionConfig.getNomForm());
+			if (formConfig != null) {
+				canonicalName = formConfig.getNomClasse();
+			}
+		}
+		return canonicalName;
+	}
+	/**
+	 * createForm : instanciation du formulaire.
+	 * @param actionurl : url associée au formulaire.
+	 * @return IActionForm : reference sur le formulaire instancié.
+	 * @throws FrameworkException : Exception en cas d'erreur.
 	 */
 	public IActionForm createForm(String actionurl) throws FrameworkException {
 		log.debug("ActionFactory.createForm : find action from url : " + actionurl);
@@ -133,9 +172,9 @@ public class ActionFactory {
 	}
 	/**
 	 * 
-	 * @param filename : nom du fichier XML de configuration du framework
-	 * @return Element : element racine du fichier xml
-	 * @throws ParserConfigurationException
+	 * @param filename : nom du fichier XML de configuration du framework.
+	 * @return Element : element racine du fichier xml.
+	 * @throws ParserConfigurationException.
 	 * @throws SAXException
 	 * @throws IOException
 	 */
@@ -156,8 +195,8 @@ public class ActionFactory {
 	}
 
 	/**
-	 * 
-	 * @param root
+	 * readXmlConfigurationActions : lecture des données de configuration pour les actions.
+	 * @param root : Element racine du document XML.
 	 * @return
 	 */
 	private static void readXmlConfigurationActions(Element root){
@@ -224,8 +263,8 @@ public class ActionFactory {
 		return ;
 	}
 	/**
-	 * 
-	 * @param root
+	 * readXmlConfigurationForms : lecture des données de configuration pour les formulaires.
+	 * @param root : Element racine du document XML.
 	 * @return
 	 */
 	private static void readXmlConfigurationForms(Element root){
@@ -287,8 +326,8 @@ public class ActionFactory {
 		return ;
 	}
 	/**
-	 * 
-	 * @return
+	 * getActionFactory : instanciation du singleton fabrique.
+	 * @return ActionFactory : instance de la fabrique.
 	 */
 	public static synchronized ActionFactory getActionFactory() {
 		if (reference == null) {

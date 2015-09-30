@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee web-
+        jsptaglibrary_2_1.xsd http://java.sun.com/xml/ns/javaee"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	version="2.1">
+
+	<tlibversion>1.1</tlibversion>
+	<shortname>samplesCustomTagLib</shortname>
+	<info>Sample Tag library</info>
+	<uri>http://taglib.framework.al24.afcepf.fr</uri>
+
+	<tag>
+		<name>hello</name>
+		<tagclass>fr.afcepf.al24.framework.taglib.TagHelloWorld</tagclass>
+		<!--Body content can have a value of empty: no body JSP: body that is evaluated 
+			by container, then possibly processed by the tag tagdependent: body is only 
+			processed by tag; JSP in body is not evaluated. -->
+		<body-content>empty</body-content>
+		<info>This is a simple hello tag.</info>
+		<!-- Optional attributes -->
+		<!-- personalized name -->
+		<attribute>
+			<name>name</name>
+			<required>false</required>
+			<rtexpvalue>false</rtexpvalue>
+		</attribute>
+	</tag>
+</taglib>

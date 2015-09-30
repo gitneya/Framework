@@ -29,7 +29,9 @@ public class FormLogin implements IActionForm {
 		
 		log.debug("FormLogin.validate");
 		
-		if (login != null && pwd != null && !login.isEmpty() && !pwd.isEmpty())
+		if (login != null && pwd != null 
+				&& !login.isEmpty() && !pwd.isEmpty() && codeNum != -1
+				)
 			isValid = true;
 		
 		return isValid;
@@ -56,8 +58,8 @@ public class FormLogin implements IActionForm {
 	/**
 	 * @param login the login to set
 	 */
-	public void setLogin(String login) {
-		this.login = login;
+	public void setLogin(String paramLogin) {
+		this.login = paramLogin;
 	}
 
 	/**
@@ -70,8 +72,8 @@ public class FormLogin implements IActionForm {
 	/**
 	 * @param pwd the pwd to set
 	 */
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
+	public void setPwd(String paramPwd) {
+		this.pwd = paramPwd;
 	}
 
 	/**
@@ -84,8 +86,8 @@ public class FormLogin implements IActionForm {
 	/**
 	 * @param codeNum the codeNum to set
 	 */
-	public void setCodeNum(int codeNum) {
-		this.codeNum = codeNum;
+	public void setCodeNum(int paramCodeNum) {
+		this.codeNum = paramCodeNum;
 	}
 
 	/* (non-Javadoc)

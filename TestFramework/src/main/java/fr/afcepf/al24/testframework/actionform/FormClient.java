@@ -4,12 +4,13 @@
 package fr.afcepf.al24.testframework.actionform;
 
 import fr.afcepf.al24.framework.actionForm.IActionForm;
-import fr.afcepf.al24.framework.exception.FrameworkException;
+import fr.afcepf.al24.framework.annotation.FormAction;
 
 /**
  * @author yanick
  *
  */
+@FormAction
 public class FormClient implements IActionForm {
 
 	/* (non-Javadoc)

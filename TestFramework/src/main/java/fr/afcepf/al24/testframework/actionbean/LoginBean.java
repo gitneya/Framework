@@ -32,11 +32,19 @@ public class LoginBean implements IAction {
 		log.debug("LoginBean.execute");
 		if (form.validate()) {
 			log.debug("LoginBean.execute : formulaire valide.");
-			if (f.getLogin().equals("toto") && f.getPwd().equals("titi")) {
+			if (f.getLogin().equals("toto") && f.getPwd().equals("titi") 
+					&&f.getCodeNum() == 123) {
+				req.getSession().removeAttribute("message");
 				nextPage = "succes.jsp";
 			} else {
+				log.debug("LoginBean.execute : authentification invalide.");
+				req.getSession().setAttribute("message","Login invalide");
 				nextPage = "connexion.jsp";
 			}
+		} else {
+			log.debug("LoginBean.execute : authentification invalide.");
+			req.getSession().setAttribute("message","Login invalide");
+			nextPage = "connexion.jsp";
 		}
 		
 		return nextPage;

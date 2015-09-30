@@ -8,14 +8,16 @@ package fr.afcepf.al24.framework.exception;
  *
  */
 public class FrameworkException extends Exception {
-
-	/**
-	 * 
-	 */
+    /**
+     *  * Identifiant unique.
+     */
 	private static final long serialVersionUID = -8439260224299384574L;
 	private String message;
 	private Error_code code;
-	
+	/**
+	 * @author Stagiaire
+	 *
+	 */
 	public enum Error_code {
 		ERROR_CODE,
 		ERROR_FORM_NOT_EXIST,
@@ -24,15 +26,15 @@ public class FrameworkException extends Exception {
 	}
 
 	/**
-	 * 
-	 * @param code
-	 * @param message
+	 * FrameworkException : constructeur.
+	 * @param paramCode : code d'erreur.
+	 * @param paramMessage : message d'erreur.
 	 */
-	public FrameworkException(Error_code code, String message) {
+	public FrameworkException(Error_code paramCode, String paramMessage) {
 		super();
-		this.message = message;
-		this.code = code;
-	}; 
+		this.message = paramMessage;
+		this.code = paramCode;
+	};
 
 	@Override
 	public String getMessage() {
